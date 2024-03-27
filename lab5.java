@@ -1,40 +1,74 @@
+public class lab5 {
+    // Entry point for the program
+    public static void main(String[] args) {
+        BST tree = new BST(); // Create a new instance of the binary search tree (BST)
+        // Example array of keys to insert into the BST
+        int[] array = {1, 22, 1, 4, 5, 6, 8};
+        for (int num : array) {
+            tree.insert(num); // Insert each key into the BST
+        }
 
-class Node:
-    def __init__(self, key):
-        self.val = key
-        self.left = None
-        self.right = None
+        // Print the sorted array by performing an inorder traversal of the BST
+        System.out.print("Sorted array: ");
+        tree.inorder();
+    }
 
-class BST:
-    def __init__(self):
-        self.root = None
+    // Static inner class representing a node in the BST
+    static class Node {
+        int val; // Value of the node
+        Node left, right; // Pointers to the left and right child nodes
 
-    def insert(self, key):
-        self.root = self._insert(self.root, key)
+        // Constructor for creating a new node with a given value
+        public Node(int item) {
+            val = item;
+            left = right = null;
+        }
+    }
 
-    def _insert(self, node, key):
-        if node is None:
-            return Node(key)
-        elif key < node.val:
-            node.left = self._insert(node.left, key)
-        else:  # Allow duplicates to go to the right subtree
-            node.right = self._insert(node.right, key)
-        return node
+    // Static inner class for the binary search tree (BST)
+    static class BST {
+        Node root; // Root node of the BST
 
-    def inorder_traversal(self):
-        return self._inorder_traversal(self.root)
+        // Constructor for creating an empty BST
+        public BST() {
+            root = null;
+        }
 
-    def _inorder_traversal(self, node):
-        elements = []
-        if node:
-            elements.extend(self._inorder_traversal(node.left))
-            elements.append(node.val)
-            elements.extend(self._inorder_traversal(node.right))
-        return elements
+        // Method to insert a new key into the BST
+        void insert(int key) {
+            root = insertRec(root, key);
+        }
 
-if __name__ == "__main__":
-    bst = BST()
-    array = [1, 22, 1, 4, 5, 6, 8]
-    for num in array:
-        bst.insert(num)
-    print("Sorted array:", bst.inorder_traversal())
+        // Recursive method to insert a new key into the BST
+        Node insertRec(Node root, int key) {
+            // If the tree is empty, create a new node for the root
+            if (root == null) {
+                root = new Node(key);
+                return root;
+            }
+
+            // Otherwise, recursively find the correct position for the new key
+            if (key < root.val)
+                root.left = insertRec(root.left, key); // Insert in the left subtree
+            else if (key >= root.val) // Duplicates allowed on the right
+                root.right = insertRec(root.right, key); // Insert in the right subtree
+
+            return root; // Return the unchanged root node
+        }
+
+        // Method to initiate inorder traversal of the BST
+        void inorder() {
+            inorderRec(root);
+        }
+
+        // Recursive method for inorder traversal, printing the BST in sorted order
+        void inorderRec(Node root) {
+            if (root != null) {
+                inorderRec(root.left); // Traverse the left subtree first
+                System.out.print(root.val + " "); // Visit the root node
+                inorderRec(root.right); // Traverse the right subtree next
+            }
+        }
+    }
+}
+
